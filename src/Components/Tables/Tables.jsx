@@ -1,4 +1,4 @@
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import snacks from "../../Data/Snaks.data";
 import "./Tables.css";
 
@@ -33,32 +33,24 @@ const snackReducer = (state, action) => {
     case "SORT__Name__in__Asc":
       return {
         ...state,
-        snacksData: [...state.snacksData].sort(
-          (a, b) => a.product_name - b.product_name
-        ),
+        snacksData: [...state.snacksData].sort(),
       };
 
     case "SORT__Name__sort__in__Desc":
       return {
         ...state,
-        snacksData: [...state.snacksData].sort(
-          (a, b) => b.product_name - a.product_name
-        ),
+        snacksData: [...state.snacksData].reverse(),
       };
 
     case "SORT__Weight__in__Asc":
       return {
         ...state,
-        snacksData: [...state.snacksData].sort(
-          (a, b) => a.product_weight - b.product_weight
-        ),
+        snacksData: [...state.snacksData].sort(),
       };
     case "SORT__Weight__sort__in__Desc":
       return {
         ...state,
-        snacksData: [...state.snacksData].sort(
-          (a, b) => b.product_weight - a.product_weight
-        ),
+        snacksData: [...state.snacksData].reverse(),
       };
     case "SORT__cal__in__Asc":
       return {
@@ -77,16 +69,12 @@ const snackReducer = (state, action) => {
     case "SORT__Ing__in__Asc":
       return {
         ...state,
-        snacksData: [...state.snacksData].sort(
-          (a, b) => a.ingredients - b.ingredients
-        ),
+        snacksData: [...state.snacksData].sort(),
       };
     case "SORT__Ing__sort__in__Desc":
       return {
         ...state,
-        snacksData: [...state.snacksData].sort(
-          (a, b) => b.ingredients - a.ingredients
-        ),
+        snacksData: [...state.snacksData].reverse(),
       };
 
     default:
@@ -98,6 +86,18 @@ const Tables = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sort, setSort] = useState(false);
   const [snacksData, dispatch] = useReducer(snackReducer, INTIAL_STATE);
+
+  useEffect(() => {
+    dispatch({
+      type: "SORT__Name__in__Asc",
+    });
+    dispatch({
+      type: "SORT__Weight__in__Asc",
+    });
+    dispatch({
+      type: "SORT__Ing__in__Asc",
+    });
+  }, []);
 
   const handleSortPrice = () => {
     setSort((prev) => !prev);
@@ -125,11 +125,7 @@ const Tables = () => {
   };
   const handleSortName = () => {
     setSort((prev) => !prev);
-    if (sort) {
-      dispatch({
-        type: "SORT__Name__in__Asc",
-      });
-    } else {
+    if (!sort) {
       dispatch({
         type: "SORT__Name__sort__in__Desc",
       });
@@ -137,11 +133,7 @@ const Tables = () => {
   };
   const handleSortWeight = () => {
     setSort((prev) => !prev);
-    if (sort) {
-      dispatch({
-        type: "SORT__Weight__in__Asc",
-      });
-    } else {
+    if (!sort) {
       dispatch({
         type: "SORT__Weight__sort__in__Desc",
       });
@@ -161,11 +153,7 @@ const Tables = () => {
   };
   const handleSortIngredient = () => {
     setSort((prev) => !prev);
-    if (sort) {
-      dispatch({
-        type: "SORT__Ing__in__Asc",
-      });
-    } else {
+    if (!sort) {
       dispatch({
         type: "SORT__Ing__sort__in__Desc",
       });
