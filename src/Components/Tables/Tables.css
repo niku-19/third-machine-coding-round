@@ -1,0 +1,14 @@
+table {
+  margin-top: 4rem;
+}
+
+table,
+th,
+td {
+  border: 1px solid green;
+  text-align: center;
+}
+
+th {
+  cursor: pointer;
+}
